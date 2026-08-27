@@ -1,0 +1,15 @@
+{
+  "name": "Levis Gourmet Eco",
+  "short_name": "GourmetEco",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#f4f9f4",
+  "theme_color": "#2e7d32",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/2921/2921822.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
