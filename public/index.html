@@ -1,52 +1,167 @@
-mkdir public
-cat << 'EOF' > public/index.html
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Zero-Waste Kitchen</title>
-  <style>
-    body { font-family: Arial, sans-serif; margin: 20px; background: #f4f9f4; color: #333; }
-    h1 { color: #2e7d32; }
-    input, button { padding: 10px; font-size: 16px; margin-right: 5px; }
-    button { background: #2e7d32; color: white; border: none; cursor: pointer; border-radius: 4px; }
-    .receta { background: white; padding: 15px; margin-top: 10px; border-radius: 6px; border-left: 5px solid #2e7d32; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Levis Gourmet Eco</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f4f8f3;
+            color: #2e3d32;
+            margin: 0;
+            padding: 20px 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .header h1 {
+            color: #2b7a3e;
+            font-size: 28px;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .header p {
+            color: #556b5c;
+            font-size: 14px;
+            margin-top: 6px;
+        }
+        .card {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+            width: 100%;
+            max-width: 380px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+            box-sizing: border-box;
+        }
+        .points-box {
+            border: 2px dashed #388e3c;
+            background-color: #edf7ee;
+            text-align: center;
+            padding: 15px;
+            border-radius: 12px;
+        }
+        .points-box h3 {
+            margin: 0;
+            font-size: 15px;
+            color: #1b4332;
+        }
+        .points-val {
+            font-size: 26px;
+            font-weight: bold;
+            color: #2e7d32;
+            margin: 4px 0;
+        }
+        .badge {
+            background-color: #2e7d32;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            display: inline-block;
+        }
+        .section-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 12px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #2b7a3e;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        .share-btn {
+            background-color: #1565c0;
+            margin-top: 10px;
+        }
+        #qrcode {
+            display: flex;
+            justify-content: center;
+            margin-top: 15px;
+        }
+    </style>
 </head>
 <body>
-  <h1>Zero-Waste Kitchen</h1>
-  <p>Ingresa los ingredientes que tienes en tu nevera (separados por coma):</p>
-  <input type="text" id="ingredientesInput" placeholder="ej. huevo, papas, banana">
-  <button onclick="buscar()">Buscar Recetas</button>
-  <div id="resultados"></div>
-  <script>
-    async function buscar() {
-      const input = document.getElementById('ingredientesInput').value;
-      const lista = input.split(',').map(item => item.trim().toLowerCase());
-      const res = await fetch('/api/buscar-recetas', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ misIngredientes: lista })
-      });
-      const data = await res.json();
-      const contenedor = document.getElementById('resultados');
-      contenedor.innerHTML = '';
-      if (data.resultados.length === 0) {
-        contenedor.innerHTML = '<p>No se encontraron recetas con esos ingredientes.</p>';
-        return;
-      }
-      data.resultados.forEach(r => {
-        contenedor.innerHTML += `
-          <div class="receta">
-            <h3>${r.nombre}</h3>
-            <p><strong>Ingredientes:</strong> ${r.ingredientes.join(', ')}</p>
-            <p><strong>Pasos:</strong> ${r.pasos}</p>
-          </div>
-        `;
-      });
-    }
-  </script>
+
+    <div class="header">
+        <h1>🌱 Levis Gourmet Eco</h1>
+        <p>Aprovecha lo que tienes en casa y reduce el desperdicio</p>
+    </div>
+
+    <!-- Puntos Eco -->
+    <div class="card">
+        <div class="points-box">
+            <h3>Tus Puntos Eco:</h3>
+            <div class="points-val">0 pts</div>
+            <span class="badge">🌱 Principiante Eco</span>
+        </div>
+    </div>
+
+    <!-- Buscar Recetas -->
+    <div class="card">
+        <div class="section-title">🔍 Buscar Recetas</div>
+        <input type="text" placeholder="ej. huevo, papas, banana">
+        <button>Buscar recetas disponibles</button>
+    </div>
+
+    <!-- Aportar Receta -->
+    <div class="card">
+        <div class="section-title">➕ Aportar una Nueva Receta</div>
+        <input type="text" placeholder="Nombre de la receta">
+        <input type="text" placeholder="Ingredientes (separados por coma)">
+        <textarea rows="3" placeholder="Pasos de preparación..."></textarea>
+        <button>Guardar mi receta</button>
+    </div>
+
+    <!-- Compartir y Código QR -->
+    <div class="card" style="text-align: center;">
+        <div class="section-title" style="justify-content: center;">📲 Compartir Aplicación</div>
+        <p style="font-size: 13px; color: #666;">Comparte Levis Gourmet Eco con tus amigos o escanea el QR:</p>
+        <button class="share-btn" onclick="copiarEnlace()">📋 Copiar Enlace</button>
+        <div id="qrcode"></div>
+    </div>
+
+    <script>
+        // Generar Código QR automáticamente con el enlace de Render
+        new QRCode(document.getElementById("qrcode"), {
+            text: window.location.href,
+            width: 128,
+            height: 128
+        });
+
+        function copiarEnlace() {
+            navigator.clipboard.writeText(window.location.href);
+            alert("¡Enlace copiado al portapapeles!");
+        }
+    </script>
+
 </body>
 </html>
-EOF
